@@ -1,14 +1,14 @@
 gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
 
-local raw = sys.get_ext "raw_video"
-local loop = raw.load_video{file="loop.mp4", looped=true}
+--local raw = sys.get_ext "raw_video"
+local loop = resource.load_video{file="loop.mp4", audio = true, looped = true, raw = true}
 
 local function pause_loop()
-    loop:target(-1, -1, -1, -1):stop()
+    loop:place(-1, -1, -1, -1):stop()
 end
 
 local function play_loop()
-    loop:target(0, 0, WIDTH, HEIGHT):layer(-2):start()
+    loop:place(0, 0, WIDTH, HEIGHT):layer(-2):start()
 end
 
 local intermission
@@ -17,22 +17,30 @@ local next_intermission
 node.alias "looper"
 
 util.data_mapper{
-    play = function(file)
-        -- load the next intermission. If there is already one
-        -- loading, abort loading now and replace it with the
-        -- new video.
-        if next_intermission then
-            next_intermission:dispose()
+    stop = function()
+        loop:stop()
+    end;
+    play = function(msg)
+        if intermission == nil then
+            -- load the next intermission. If there is already one
+            -- loading, abort loading now and replace it with the
+            -- new video.
+            if next_intermission then
+                next_intermission:dispose()
+            end
+            --I have no idea why, but the passed variable adds a new character line, I use this trick to remove it
+            newFileName = tonumber(msg) .. ".mp4"
+               	
+            next_intermission = resource.load_video{file = newFileName ; raw = true ; audio = true}
         end
-        next_intermission = raw.load_video(file)
-        next_intermission:target(0, 0, WIDTH, HEIGHT):layer(-3)
-    end
+    end;
 }
 
-play_loop()
-
 function node.render()
-    gl.clear(0,0,0,0)
+    --removed and no detrimental effects noticed
+    --gl.clear(0,0,0,0)
+    --loop:draw(0, 0, WIDTH, HEIGHT)
+    play_loop()
     if next_intermission and next_intermission:state() == "loaded" then
         -- next intermission finished loading? Then stop any
         -- intermission that is currently running and replace
@@ -40,8 +48,9 @@ function node.render()
         if intermission then
             intermission:dispose()
         end
+        next_intermission:place(0,0, WIDTH, HEIGHT):layer(-3)
         intermission = next_intermission
-        intermission:layer(-1)
+        intermission:layer(-1):start()
         next_intermission = nil
         pause_loop()
     end
@@ -52,6 +61,6 @@ function node.render()
         -- loop.
         intermission:dispose()
         intermission = nil
-        play_loop()
+	play_loop()
     end
 end
