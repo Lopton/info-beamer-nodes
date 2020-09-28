@@ -3,7 +3,7 @@
 This code plays `loop.mp4` in a loop until you tell it to interrupt with
 another intermission video file.
 
-# Lopton 2020-09 Update
+# Matt Emerson 2020-09 Update
 
 This original example was 6 years old and did not function on the latest Info-Beam Pi.
 I have updated the code to function and have it working on my Raspberry Pi 4.
