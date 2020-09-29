@@ -7,9 +7,27 @@ another intermission video file.
 
 This original example was 6 years old and did not function on the latest Info-Beam Pi.
 I have updated the code to function and have it working on my Raspberry Pi 4.
-It loops one video continuously (loop.mp4) and then listens for UDP packets with a number
-it then plays that new video with a number until it is finished then goes back to the
-looped video.
+It loops one video continuously (loop.mp4) and then listens for UDP packets with a "looper/play:3" 
+( 3 can be any integer) it then plays that new video with a number until it is finished then goes 
+back to the looped video.
+
+A friend of mine used it for halloween, he had some singing faces he projected on to some pumpkins. 
+The loop was them just sitting there with background noise, then he wrote a Python script with a 
+motion detector that, when triggered, sent the UDP packet with a random number equating to a video
+in the project folder. Then the loop would be interrupted with the new video and the pumpkins would
+perform. 
+
+To accomplish all of this you need to:
+1.) Install the Open Source version of Info-Beamer Pi (follow all instructions)
+2.) If you want audio you need to set an enviormental variable telling the audio where to go:
+INFOBEAMER_AUDIO_TARGET=hdmi
+INFOBEAMER_AUDIO_TARGET=local
+3.) It is best to ensure a sample info-beamer project runs as expected on the PI then move on to creating your own
+4.) Create a folder (easiest in the home directory) that is the name of your project
+5.) In that folder put the node.lua file, a loop.mp4 (or change file type in lua text if you want), and any number of intermission videos that are numbered
+6.) sudo info-beamer nameOfFolder (i had to do sudo -E to get my env variables to be seen in sudo), your loop should start playing
+7.) see Interrupting playback for how to send a UDP packet to cut in one of the intermission videos.
+
 
 All of this is based on the incredible Info-Beam, which requires a license if used commercially
 
