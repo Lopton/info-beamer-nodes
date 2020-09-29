@@ -19,13 +19,19 @@ perform.
 
 To accomplish all of this you need to:
 1.) Install the Open Source version of Info-Beamer Pi (follow all instructions)
+
 2.) If you want audio you need to set an enviormental variable telling the audio where to go:
 INFOBEAMER_AUDIO_TARGET=hdmi
 INFOBEAMER_AUDIO_TARGET=local
+
 3.) It is best to ensure a sample info-beamer project runs as expected on the PI then move on to creating your own
+
 4.) Create a folder (easiest in the home directory) that is the name of your project
+
 5.) In that folder put the node.lua file, a loop.mp4 (or change file type in lua text if you want), and any number of intermission videos that are numbered
+
 6.) sudo info-beamer nameOfFolder (i had to do sudo -E to get my env variables to be seen in sudo), your loop should start playing
+
 7.) see Interrupting playback for how to send a UDP packet to cut in one of the intermission videos.
 
 
